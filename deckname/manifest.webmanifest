@@ -1,0 +1,18 @@
+{
+  "name": "Deckname",
+  "short_name": "Deckname",
+  "description": "Ersetzt Namen, Firmen, Adressen und Nummern durch Platzhalter, bevor ein Text in ein KI-Werkzeug geht, und setzt sie in der Antwort wieder ein.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "/deckname",
+  "scope": "/deckname",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "icons": [
+    { "src": "/deckname/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/deckname/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/deckname/icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

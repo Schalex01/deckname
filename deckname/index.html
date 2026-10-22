@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Deckname · Namen aus Texten nehmen, bevor sie in ChatGPT oder Claude gehen</title>
+<meta name="description" content="Kostenloses Werkzeug: ersetzt Namen, Firmen, Adressen und Nummern durch Platzhalter, bevor ein Text in ein KI-Werkzeug geht, und setzt sie in der Antwort wieder ein. Läuft komplett im Browser, kein Server sieht den Text.">
+<link rel="canonical" href="https://a-schmitt.com/deckname">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:url" content="https://a-schmitt.com/deckname">
+<meta property="og:title" content="Deckname · Namen raus, KI rein, Namen wieder rein">
+<meta property="og:description" content="Text pseudonymisieren, bevor er in ChatGPT, Claude oder Copilot geht, und die Namen in der Antwort zurückholen. Kostenlos, im Browser, ohne Server.">
+<meta property="og:image" content="https://a-schmitt.com/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#020617">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/deckname/icons/favicon-32.png">
+<link rel="manifest" href="/deckname/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/deckname/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Deckname">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Deckname","url":"https://a-schmitt.com/deckname","sameAs":"https://github.com/Schalex01/deckname","author":{"@type":"Person","@id":"https://a-schmitt.com/#alexander-schmitt","name":"Alexander Schmitt"},"applicationCategory":"UtilitiesApplication","operatingSystem":"Web","inLanguage":"de","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"description":"Ersetzt Namen, Firmen, Adressen und Nummern durch Platzhalter, bevor ein Text in ein KI-Werkzeug geht, und setzt sie in der Antwort wieder ein. Läuft komplett im Browser.","author":{"@type":"Person","name":"Alexander Schmitt","url":"https://a-schmitt.com","@id":"https://a-schmitt.com/#alexander-schmitt"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Alexander Schmitt","item":"https://a-schmitt.com/de"},{"@type":"ListItem","position":2,"name":"Deckname","item":"https://a-schmitt.com/deckname"}]}
+</script>
+<link rel="stylesheet" href="/deckname/style.css?v=0.5">
+</head>
+<body>
+<a class="skip" href="#src">Zum Eingabefeld</a>
+
+<header class="top">
+  <div class="wrap row">
+    <a class="logo" href="https://a-schmitt.com" title="Zurück zu a-schmitt.com"><span class="lg">Alexander Schmitt</span><span class="sm">A.</span></a>
+    <div class="tools">
+      <button id="btnDict" class="btn ghost small" type="button" aria-haspopup="dialog">Wörterbuch <span id="dictCount" class="cnt">0</span></button>
+      <button id="btnInstall" class="btn ghost small" type="button" hidden>Als App</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Deckname</div>
+    <h1>Namen raus. KI rein.<br>Namen wieder rein.</h1>
+    <p class="lead">Ersetzt Personen, Firmen, Adressen und Nummern durch Platzhalter, bevor ein Text in ein KI-Werkzeug geht, und setzt sie in der Antwort wieder ein. Alles passiert in Ihrem Browser, kein Server sieht den Text. Die Vorschau prüfen Sie trotzdem selbst: Deckname schützt Namen, es macht einen Text nicht unkenntlich.</p>
+    <div class="leadactions">
+      <button id="btnTour" class="textbtn" type="button" aria-expanded="false" aria-controls="tour">So funktioniert es</button>
+    </div>
+
+    <div id="tour" class="tour" hidden>
+      <div class="tourstep"><span class="num">1</span><div><b>Text oder Datei einfügen.</b> Word, PowerPoint, PDF, Text und Tabellen (CSV) gehen auch als Datei. E-Mail-Adressen, Telefonnummern und IBANs findet Deckname selbst. Namen, Firmen und Orte sind Vermutungen und gestrichelt markiert.</div></div>
+      <div class="tourstep"><span class="num">2</span><div><b>Vorschau prüfen.</b> Fehlt etwas, markieren Sie es. Ist etwas zu viel, tippen Sie auf das ×. Zum Umbenennen (etwa CHEF_M statt PERSON_1) auf den Treffer tippen.</div></div>
+      <div class="tourstep"><span class="num">3</span><div><b>Kopieren, arbeiten, zurückholen.</b> Geschützten Text ins KI-Werkzeug, die Antwort in Schritt 2 einfügen. Die Namen kommen zurück. Was Sie kopieren, merkt sich Deckname: Namen behalten ihren Platzhalter, auch beim nächsten Text. Mailadressen und Nummern speichert es nie.</div></div>
+      <div class="touractions">
+        <button id="btnExample" class="btn ghost small" type="button">Beispiel ansehen</button>
+        <button id="btnTourDone" class="btn primary small" type="button">Verstanden</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="step drop" id="step1" aria-labelledby="h1s1">
+    <div class="stephead">
+      <span class="num">1</span>
+      <h2 id="h1s1">Text schützen</h2>
+      <span class="hint">Einfügen, Vorschau prüfen, geschützten Text kopieren. Neuer Text: einfach oben ersetzen.</span>
+    </div>
+    <label class="srlabel" for="src">Originaltext</label>
+    <div class="fieldhead" id="srcHead">
+      <span class="lbl" aria-hidden="true">Originaltext</span>
+      <button id="btnPasteSrc" class="btn ghost small" type="button" hidden>Aus Zwischenablage</button>
+    </div>
+    <textarea id="src" spellcheck="false" placeholder="Originaltext hier einfügen: Transkript, Mail, Notiz, Stabliste … oder Dateien hierher ziehen"></textarea>
+    <div class="filerow">
+      <input id="fileInput" type="file" multiple accept=".docx,.pptx,.pdf,.txt,.md,.csv,.tsv" hidden>
+      <label class="filelink" for="fileInput" tabindex="0" role="button">oder Dateien wählen (Word, PowerPoint, PDF, Text, CSV)</label>
+      <span class="filenote">Bis 25 MB je Datei, bis 30 Dateien. Alles bleibt in Ihrem Browser.</span>
+    </div>
+    <div id="docs" class="docs" hidden>
+      <div class="previewhead"><span class="lbl">Ihre Dateien</span><span id="docsInfo" class="lbl dim"></span></div>
+      <div id="docsList" class="docslist"></div>
+    </div>
+    <div id="previewwrap" class="previewwrap" hidden>
+      <div class="previewhead">
+        <span class="lbl" id="previewLbl">Vorschau mit Platzhaltern</span>
+        <span class="lbl dim">Text markieren, um etwas nachzutragen · Treffer anklicken zum Umbenennen · × entfernt</span>
+      </div>
+      <div id="preview" class="preview" aria-live="polite"></div>
+      <button id="btnSelProtect" class="btn primary small selbtn" type="button" hidden>Auswahl schützen</button>
+      <div id="docnote" class="docnote" hidden></div>
+    </div>
+    <div class="foot">
+      <div id="stats" class="chips"></div>
+      <div class="actions">
+        <label class="check" id="preambleLabel"><input type="checkbox" id="preambleOn" checked> Hinweis für die KI mitschicken</label>
+        <button id="btnCopyProt" class="btn primary" type="button" disabled>Geschützten Text kopieren</button>
+        <button id="btnClearFiles" class="btn ghost" type="button" hidden>Dateien entfernen</button>
+        <button id="btnCopyHint" class="btn ghost" type="button" hidden>KI-Hinweis kopieren</button>
+        <button id="btnCopyTable" class="btn ghost" type="button" hidden title="Die geschützte Tabelle so kopieren, wie Excel es bei Strg+C tut: einfügen in Excel, Word oder ein KI-Werkzeug">Tabelle kopieren</button>
+        <button id="btnZip" class="btn primary" type="button" hidden disabled>Alle herunterladen (ZIP)</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="step drop" id="step2" aria-labelledby="h1s2">
+    <div class="stephead">
+      <span class="num">2</span>
+      <h2 id="h1s2">Antwort zurückübersetzen</h2>
+      <span class="hint">Die Antwort des KI-Werkzeugs einfügen. Aus PERSON_1 wird wieder der echte Name.</span>
+    </div>
+    <label class="srlabel" for="ai">Antwort des KI-Werkzeugs</label>
+    <div class="fieldhead">
+      <span class="lbl" aria-hidden="true">Antwort des KI-Werkzeugs</span>
+      <span class="headbtns">
+        <button id="btnPasteAi" class="btn ghost small" type="button" hidden>Zurückholen aus Zwischenablage</button>
+        <button id="btnFileBack" class="btn ghost small" type="button">Datei zurückübersetzen</button>
+      </span>
+      <input id="fileBack" type="file" accept=".docx,.pptx,.txt,.md,.csv,.tsv" hidden>
+    </div>
+    <textarea id="ai" spellcheck="false" placeholder="Antwort des KI-Werkzeugs hier einfügen … oder die geschützte Datei hierher ziehen"></textarea>
+    <div id="resultwrap" class="previewwrap" hidden>
+      <div class="previewhead"><span class="lbl">Ergebnis mit echten Namen</span></div>
+      <div id="result" class="preview result" aria-live="polite"></div>
+    </div>
+    <div class="foot">
+      <div id="stats2" class="chips"></div>
+      <div class="actions">
+        <button id="btnCopyRes" class="btn primary" type="button" disabled>Ergebnis kopieren</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="spacer"></div>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <div class="l">
+      <a href="https://a-schmitt.com/de/impressum">Impressum</a>
+      <a href="https://a-schmitt.com/de/datenschutz">Datenschutz</a>
+      <a href="https://github.com/Schalex01/deckname">Quellcode</a>
+      <a href="https://a-schmitt.com">a-schmitt.com</a>
+    </div>
+    <div class="made">Ein Werkzeug von Alexander Schmitt · Version 0.5</div>
+  </div>
+</footer>
+
+<!-- Auswahl-Menü (Text markieren) -->
+<div id="pop" class="pop" role="dialog" aria-label="Markierung anlegen" hidden>
+  <div class="poptitle">„<span id="popText"></span>" schützen als</div>
+  <div class="popbtns" id="popTypes"></div>
+</div>
+
+<!-- Treffer-Menü (auf Treffer klicken) -->
+<div id="chipmenu" class="pop" role="dialog" aria-label="Treffer bearbeiten" hidden>
+  <div class="poptitle"><span id="chipText"></span></div>
+  <div class="popreason" id="chipReason"></div>
+  <label class="poplabel" for="chipPh">Platzhalter umbenennen</label>
+  <input id="chipPh" class="phinput" maxlength="24" spellcheck="false" placeholder="z. B. CHEF_M">
+  <div class="popbtns" id="chipTypes"></div>
+  <div class="poprow">
+    <span class="popnote">Enter übernimmt den neuen Namen</span>
+    <button type="button" class="btn danger small" id="chipRemove">Entfernen</button>
+  </div>
+</div>
+
+<!-- Wörterbuch -->
+<div id="drawerbg" class="drawerbg" hidden></div>
+<aside id="drawer" class="drawer" role="dialog" aria-label="Wörterbuch" hidden>
+  <div class="drawerhead">
+    <h2>Wörterbuch</h2>
+    <button type="button" class="iconbtn" id="btnDrawerClose" aria-label="Schließen">×</button>
+  </div>
+  <p class="drawerlead">Jede Karte ist ein Platzhalter. Alle Schreibweisen darauf werden im Text zu ihm, und im Rückweg wird er zu dem, was bei „zurück zu“ steht.</p>
+  <details class="drawermore">
+    <summary>Mehr dazu</summary>
+    <p>Was hier steht, behält seinen Platzhalter, auch nächste Woche im dritten Text. Von Hand Markiertes kommt sofort hinein, Vermutungen erst, wenn Sie den geschützten Text kopieren oder eine Datei herunterladen. Mailadressen, Telefonnummern, IBANs und Kartennummern nie.</p>
+    <p>Kurzformen und andere Schreibweisen tippen Sie unten auf der Karte ein. Steht eine Schreibweise schon auf einer anderen Karte, schlägt Deckname die Karte vor: ein Klick nimmt sie mit allen Schreibweisen auf, ihr alter Platzhalter bleibt im Rückweg auflösbar. Gestrichelte Chips gehören zu so einer aufgenommenen Karte, das × macht daraus wieder eine eigene.</p>
+  </details>
+  <div id="volatileNote" class="volatilenote" hidden></div>
+  <div id="dictList" class="dictlist"></div>
+  <div id="ignoredWrap" class="ignored" hidden>
+    <div class="lbl">Entfernt, bleibt im Klartext</div>
+    <div id="ignoredList" class="ignoredlist"></div>
+  </div>
+  <div class="storagenote">
+    <b>Wo das Wörterbuch liegt.</b> Nur in diesem Browser auf diesem Gerät, nicht auf einem Server. Es überlebt Schließen und Neustart. Weg ist es, wenn Sie die Website-Daten löschen, ein privates Fenster oder ein anderes Gerät benutzen. Safari löscht es außerdem nach sieben Tagen ohne Besuch der Seite. Wer es länger braucht: exportieren und die Datei behalten. Der Export enthält Klarnamen.
+  </div>
+  <div class="drawerfoot">
+    <button type="button" class="btn ghost small" id="btnExport">Exportieren</button>
+    <label class="btn ghost small" for="importFile">Importieren</label>
+    <input id="importFile" type="file" accept="application/json" hidden>
+    <button type="button" class="btn danger small" id="btnClearDict">Wörterbuch leeren</button>
+  </div>
+</aside>
+
+<!-- Hinweis, wie Safari eine Seite als App ablegt -->
+<div id="installhint" class="pop" role="dialog" aria-label="Als App ablegen" hidden>
+  <div class="poptitle">Deckname als App</div>
+  <div class="popreason" id="installhintText"></div>
+</div>
+
+<div id="toast" class="toast" role="status" hidden><span id="toastText"></span><button id="toastUndo" class="undo" type="button" hidden>Rückgängig</button></div>
+
+<script defer src="/_vercel/insights/script.js"></script>
+<script src="/deckname/vendor/jszip.min.js?v=0.5"></script>
+<script type="module" src="/deckname/app.js?v=0.5"></script>
+</body>
+</html>
